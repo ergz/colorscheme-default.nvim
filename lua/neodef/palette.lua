@@ -1,4 +1,4 @@
-local U = require("default.utils")
+local U = require("neodef.utils")
 
 local M = {}
 

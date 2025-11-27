@@ -1,5 +1,5 @@
-local P = require("default.palette")
-local U = require("default.utils")
+local P = require("neodef.palette")
+local U = require("neodef.utils")
 
 return {
     -- Git

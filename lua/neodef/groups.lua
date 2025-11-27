@@ -130,7 +130,7 @@ return {
     NoiceCmdlineIconSearch = { fg = P.yellow, bg = P.bg_dark },
     NoiceCmdline = { bg = P.bg_dark },
     NoiceCmdlinePopup = { link = "NoiceCmdline" },
-    NoiceCmdlinePopupBorder = { fg = P.cyan, bg = P.bg_dark },
+    NoiceCmdlinePopupBorder = { fg = P.fg, bg = P.bg_dark },
     NoiceMini = { bg = P.bg },
 
     -- Todo comments

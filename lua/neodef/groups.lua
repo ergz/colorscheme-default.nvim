@@ -127,10 +127,10 @@ return {
     -- Noice.
     NoiceFormatProgressDone = { bg = P.green },
     NoiceCmdlineIcon = { fg = P.yellow },
-    NoiceCmdlineIconSearch = { fg = P.yellow, bg = P.bg_dark },
-    NoiceCmdline = { bg = P.bg_dark },
+    NoiceCmdlineIconSearch = { fg = P.yellow, bg = U.get_bg(P.bg) },
+    NoiceCmdline = { bg = U.get_bg(P.bg) },
     NoiceCmdlinePopup = { link = "NoiceCmdline" },
-    NoiceCmdlinePopupBorder = { fg = P.fg, bg = P.bg_dark },
+    NoiceCmdlinePopupBorder = { fg = P.fg, bg = U.get_bg(P.bg) },
     NoiceMini = { bg = P.bg },
 
     -- Todo comments

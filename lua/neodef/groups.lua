@@ -31,7 +31,7 @@ return {
     -- Syntax tweaks.
     MatchParen = { bg = U.get_bg(P.bg), underline = true },
     Statement = { fg = P.orange, bold = false },
-    Comment = { fg = P.white0, bold = false },
+    Comment = { fg = P.comment, bold = false },
     Title = { fg = P.yellow, bold = true },
     Constant = { bold = false },
     ["@markup.heading.2"] = { fg = P.orange, bold = true },

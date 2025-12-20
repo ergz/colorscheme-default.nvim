@@ -32,6 +32,7 @@ M.bg = M.gray0
 M.bg_dark = M.black
 M.bg_float = U.blend(M.bg, 0.55, M.bg_dark)
 M.fg_dim = U.blend(M.white2, 0.65, M.bg_dark)
+M.comment = U.blend(M.fg, 0.7, M.bg)
 M.bg_highlight = M.gray1
 M.diff = {
     add = U.blend(M.green, 0.2, M.bg_dark),

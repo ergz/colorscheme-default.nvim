@@ -2,47 +2,111 @@ local U = require("neodef.utils")
 
 local M = {}
 
--- NOTE: Using builtin neovim colors.
-M = {
-    -- Colors.
-    red = U.get_color_hex("LightCoral"),
-    green = U.get_color_hex("NvimLightGreen"),
-    yellow = U.get_color_hex("NvimLightYellow"),
-    magenta = U.get_color_hex("NvimLightMagenta"),
-    orange = U.get_color_hex("LightSalmon"),
-    blue = U.get_color_hex("LightSkyBlue"),
-    cyan = U.get_color_hex("NvimLightCyan"),
+-- Pre-computed palette variants
+-- calm: 50% saturation, compressed lightness for grays
+-- default: current values from nvim builtins
+-- intense: 150% saturation, expanded lightness for grays
+local palettes = {
+    calm = {
+        -- Chromatic colors (desaturated)
+        red = "#d49b9b",
+        green = "#c3e5ca",
+        yellow = "#e2d4ae",
+        magenta = "#f1d7f1",
+        orange = "#ddae9b",
+        blue = "#a3c7dd",
+        cyan = "#a6dddc",
 
-    -- Blacks/grays.
-    black = U.get_color_hex("NvimDarkGray1"),
-    gray0 = U.get_color_hex("NvimDarkGray2"),
-    gray1 = U.get_color_hex("NvimDarkGray3"),
-    gray2 = U.get_color_hex("NvimDarkGray4"),
+        -- Grays (compressed toward middle)
+        black = "#131623",
+        gray0 = "#21242c",
+        gray1 = "#37393f",
+        gray2 = "#55585e",
 
-    -- Whites.
-    white0 = U.get_color_hex("NvimLightGray1"),
-    white1 = U.get_color_hex("NvimLightGray2"),
-    white2 = U.get_color_hex("NvimLightGray3"),
-    white3 = U.get_color_hex("NvimLightGray4"),
+        -- Whites (compressed toward middle)
+        white0 = "#d5dced",
+        white1 = "#cdd1dd",
+        white2 = "#b8bac2",
+        white3 = "#95999f",
+    },
+
+    default = {
+        -- Chromatic colors (nvim builtins)
+        red = "#f08080",
+        green = "#b3f6c0",
+        yellow = "#fce094",
+        magenta = "#ffcaff",
+        orange = "#ffa07a",
+        blue = "#87cefa",
+        cyan = "#8cf8f7",
+
+        -- Grays
+        black = "#07080d",
+        gray0 = "#14161b",
+        gray1 = "#2c2e33",
+        gray2 = "#4f5258",
+
+        -- Whites
+        white0 = "#eef1f8",
+        white1 = "#e0e2ea",
+        white2 = "#c4c6cd",
+        white3 = "#9b9ea4",
+    },
+
+    intense = {
+        -- Chromatic colors (saturated)
+        red = "#ff7171",
+        green = "#a9ffba",
+        yellow = "#ffe191",
+        magenta = "#ffc9ff",
+        orange = "#ffa07a",
+        blue = "#82cfff",
+        cyan = "#84fffd",
+
+        -- Grays (expanded from middle)
+        black = "#000000",
+        gray0 = "#0b0c0f",
+        gray1 = "#24262a",
+        gray2 = "#4a4d53",
+
+        -- Whites (expanded from middle)
+        white0 = "#fefefe",
+        white1 = "#ecedf2",
+        white2 = "#cbcdd3",
+        white3 = "#9ea1a7",
+    },
 }
 
--- Extensions.
-M.fg = M.white0
-M.bg = M.gray0
-M.bg_dark = M.black
-M.bg_float = U.blend(M.bg, 0.55, M.bg_dark)
-M.fg_dim = U.blend(M.white2, 0.65, M.bg_dark)
-M.comment = U.blend(M.fg, 0.7, M.bg)
-M.bg_highlight = M.gray1
-M.diff = {
-    add = U.blend(M.green, 0.2, M.bg_dark),
-    delete = U.blend(M.red, 0.2, M.bg_dark),
-    change = U.blend(M.blue, 0.2, M.bg_dark),
-    text = M.blue,
-}
+-- Add derived colors (fg, bg, diff, etc.) to a base palette
+local function extend_palette(base)
+    local P = vim.tbl_extend("force", {}, base)
+    P.fg = P.white0
+    P.bg = P.gray0
+    P.bg_dark = P.black
+    P.bg_float = U.blend(P.bg, 0.55, P.bg_dark)
+    P.fg_dim = U.blend(P.white2, 0.65, P.bg_dark)
+    P.comment = U.blend(P.fg, 0.7, P.bg)
+    P.bg_highlight = P.gray1
+    P.diff = {
+        add = U.blend(P.green, 0.2, P.bg_dark),
+        delete = U.blend(P.red, 0.2, P.bg_dark),
+        change = U.blend(P.blue, 0.2, P.bg_dark),
+        text = P.blue,
+    }
+    return P
+end
 
-function M.print_palette()
-    print(vim.inspect(M))
+function M.get_palette(intensity)
+    intensity = intensity or "default"
+    if not palettes[intensity] then
+        vim.notify("Unknown intensity: " .. intensity .. ", using default", vim.log.levels.WARN)
+        intensity = "default"
+    end
+    return extend_palette(palettes[intensity])
+end
+
+function M.print_palette(intensity)
+    print(vim.inspect(M.get_palette(intensity)))
 end
 
 return M

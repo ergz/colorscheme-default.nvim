@@ -1,7 +1,7 @@
 local M = {}
 
 M.config = {
-    intensity = "default", -- "calm" | "default" | "intense"
+    mood = "default", -- "calm" | "default" | "intense"
 }
 
 function M.setup(opts)
@@ -15,7 +15,7 @@ function M.load()
     vim.g.colors_name = "neodef"
 
     local U = require('neodef.utils')
-    local P = require('neodef.palette').get_palette(M.config.intensity)
+    local P = require('neodef.palette').get_palette(M.config.mood)
     local groups = require("neodef.groups")
     U.set_highlights_table(groups(P))
 end
@@ -24,9 +24,9 @@ vim.api.nvim_create_user_command("Neodef", function(opts)
     if opts.args == "" then
         vim.cmd.colorscheme("neodef")
     elseif opts.args == "palette" then
-        require("neodef.palette").print_palette(M.config.intensity)
+        require("neodef.palette").print_palette(M.config.mood)
     elseif opts.args == "calm" or opts.args == "intense" or opts.args == "default" then
-        M.config.intensity = opts.args
+        M.config.mood = opts.args
         vim.cmd.colorscheme("neodef")
     else
         vim.notify("Unknown argument: " .. opts.args, vim.log.levels.ERROR)

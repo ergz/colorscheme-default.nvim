@@ -1,4 +1,4 @@
-local P = require('neodef.palette').get_palette(require('neodef').config.intensity)
+local P = require('neodef.palette').get_palette(require('neodef').config.mood)
 
 local function create_group(mode_color)
     local DEFAULT_SECTION = {

@@ -96,17 +96,17 @@ local function extend_palette(base)
     return P
 end
 
-function M.get_palette(intensity)
-    intensity = intensity or "default"
-    if not palettes[intensity] then
-        vim.notify("Unknown intensity: " .. intensity .. ", using default", vim.log.levels.WARN)
-        intensity = "default"
+function M.get_palette(mood)
+    mood = mood or "default"
+    if not palettes[mood] then
+        vim.notify("Unknown mood: " .. mood .. ", using default", vim.log.levels.WARN)
+        mood = "default"
     end
-    return extend_palette(palettes[intensity])
+    return extend_palette(palettes[mood])
 end
 
-function M.print_palette(intensity)
-    print(vim.inspect(M.get_palette(intensity)))
+function M.print_palette(mood)
+    print(vim.inspect(M.get_palette(mood)))
 end
 
 return M

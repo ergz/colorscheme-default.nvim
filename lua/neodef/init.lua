@@ -2,6 +2,7 @@ local M = {}
 
 M.config = {
     mood = "default", -- "calm" | "default" | "intense"
+    overrides = {},   -- table or function(P) that returns table
 }
 
 function M.setup(opts)
@@ -16,8 +17,24 @@ function M.load()
 
     local U = require('neodef.utils')
     local P = require('neodef.palette').get_palette(M.config.mood)
-    local groups = require("neodef.groups")
-    U.set_highlights_table(groups(P))
+    local groups = require("neodef.groups")(P)
+
+    -- Resolve overrides (table or function)
+    local overrides = M.config.overrides
+    if type(overrides) == "function" then
+        overrides = overrides(P)
+    end
+
+    -- Merge overrides into groups
+    for group, opts in pairs(overrides) do
+        if groups[group] then
+            groups[group] = vim.tbl_extend("force", groups[group], opts)
+        else
+            groups[group] = opts
+        end
+    end
+
+    U.set_highlights_table(groups)
 end
 
 vim.api.nvim_create_user_command("Neodef", function(opts)

@@ -7,46 +7,48 @@ M.config = {
 
 function M.setup(opts)
     M.config = vim.tbl_deep_extend("force", M.config, opts or {})
-    M.load()
 end
 
-function M.load()
+function M.load(opts)
+    -- Color file opts are defaults, M.config (from setup) takes precedence
+    opts = vim.tbl_deep_extend("force", { mood = "default", overrides = {} }, opts or {}, M.config)
+
     vim.api.nvim_command('hi clear')
     vim.o.termguicolors = true
     vim.g.colors_name = "neodef"
 
     local U = require('neodef.utils')
-    local P = require('neodef.palette').get_palette(M.config.mood)
+    local P = require('neodef.palette').get_palette(opts.mood)
     local groups = require("neodef.groups")(P)
 
     -- Resolve overrides (table or function)
-    local overrides = M.config.overrides
+    local overrides = opts.overrides
     if type(overrides) == "function" then
         overrides = overrides(P)
     end
 
     -- Merge overrides into groups
-    for group, opts in pairs(overrides) do
+    for group, hl_opts in pairs(overrides) do
         if groups[group] then
-            groups[group] = vim.tbl_extend("force", groups[group], opts)
+            groups[group] = vim.tbl_extend("force", groups[group], hl_opts)
         else
-            groups[group] = opts
+            groups[group] = hl_opts
         end
     end
 
     U.set_highlights_table(groups)
 end
 
-vim.api.nvim_create_user_command("Neodef", function(opts)
-    if opts.args == "" then
+vim.api.nvim_create_user_command("Neodef", function(cmd_opts)
+    if cmd_opts.args == "" then
         vim.cmd.colorscheme("neodef")
-    elseif opts.args == "palette" then
+    elseif cmd_opts.args == "palette" then
         require("neodef.palette").print_palette(M.config.mood)
-    elseif opts.args == "calm" or opts.args == "intense" or opts.args == "default" then
-        M.config.mood = opts.args
+    elseif cmd_opts.args == "calm" or cmd_opts.args == "intense" or cmd_opts.args == "default" then
+        M.config.mood = cmd_opts.args
         vim.cmd.colorscheme("neodef")
     else
-        vim.notify("Unknown argument: " .. opts.args, vim.log.levels.ERROR)
+        vim.notify("Unknown argument: " .. cmd_opts.args, vim.log.levels.ERROR)
     end
 end, {
     nargs = "?",

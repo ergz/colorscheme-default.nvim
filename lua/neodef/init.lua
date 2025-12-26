@@ -13,6 +13,11 @@ function M.load(opts)
     -- Color file opts are defaults, M.config (from setup) takes precedence
     opts = vim.tbl_deep_extend("force", { mood = "default", overrides = {} }, opts or {}, M.config)
 
+    -- Clear cached modules so colorscheme reloads properly when switching themes
+    package.loaded["neodef.palette"] = nil
+    package.loaded["neodef.groups"] = nil
+    package.loaded["neodef.utils"] = nil
+
     vim.api.nvim_command('hi clear')
     vim.o.termguicolors = true
     vim.g.colors_name = "neodef"

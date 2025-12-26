@@ -8,7 +8,7 @@ return function(P)
         Changed = { fg = P.blue },
 
         -- Native UI.
-        Normal = { bg = U.get_bg(P.bg) },
+        Normal = { fg = P.fg, bg = U.get_bg(P.bg) },
         Visual = { bg = P.bg_highlight },
         WinBar = {
             fg = P.fg_dim,

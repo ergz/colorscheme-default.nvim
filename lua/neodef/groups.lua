@@ -20,7 +20,7 @@ return function(P)
         Pmenu = { link = "Normal" },
         WinSeparator = { fg = P.bg_dark, bg = U.get_bg(P.bg) },
         NormalFloat = { fg = P.fg, bg = U.get_bg(P.bg) },
-        FloatBorder = { fg = P.fg, bg = U.get_bg(P.bg) },
+        FloatBorder = { fg = P.gray2, bg = U.get_bg(P.bg) },
         LineNR = { fg = P.gray2, bg = U.get_bg(P.bg) },
         CursorLineNR = { fg = P.white0, bg = U.get_bg(P.bg), bold = true },
         QuickFixFilename = { fg = P.fg },
